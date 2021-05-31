@@ -69,7 +69,7 @@ def load_data(messages_filepath, categories_filepath):
  def save_data(df, database_filename):  
     
     """
-    This dunction saves the dataframe into SQL database
+    This function saves the dataframe into SQL database
     
     input: 
          Dataframe as df and name for the database as database_filename
