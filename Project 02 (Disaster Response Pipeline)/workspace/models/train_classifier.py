@@ -95,14 +95,29 @@ def build_model():
     ])
     
     # hyerparameters for grid to search within
-    parameters = [{'clf__bootstrap': [False, True]}]
-#         {'clf__bootstrap': [False, True],
+#    parameters = [{'clf__bootstrap': [False, True],
+#          'clf__bootstrap': [False, True],
 #          'clf__n_estimators': [80,90, 100, 110, 130],
 #          'clf__max_features': [0.6, 0.65, 0.7, 0.73, 0.7500000000000001, 0.78, 0.8],
 #          'clf__min_samples_leaf': [10, 12, 14],
 #          'clf__min_samples_split': [3, 5, 7]
 #         }
 #     ]
+
+    parameters = {
+    'features__text_pipeline__vect__ngram_range': ((1, 1), (1, 2)),
+    'features__text_pipeline__vect__max_df': (0.5, 0.75, 1.0),
+    'features__text_pipeline__vect__max_features': (None, 5000, 10000),
+    'features__text_pipeline__tfidf__use_idf': (True, False),
+    'clf__n_estimators': [50, 100, 200],
+    'clf__min_samples_split': [2, 3, 4],
+    'features__transformer_weights': (
+        {'text_pipeline': 1, 'starting_verb': 0.5},
+        {'text_pipeline': 0.5, 'starting_verb': 1},
+        {'text_pipeline': 0.8, 'starting_verb': 1},
+    )
+    }
+
 
     # Final model ready to be applied on dataset
     model = GridSearchCV(pipeline, param_grid=parameters)
