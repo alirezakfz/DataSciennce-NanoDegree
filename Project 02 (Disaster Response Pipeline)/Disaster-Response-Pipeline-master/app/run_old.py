@@ -1,22 +1,3 @@
-"""
-import json
-import plotly
-import pandas as pd
-
-import os
-from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
-
-from flask import Flask
-from flask import render_template, request, jsonify
-from plotly.graph_objs import Bar
-#from sklearn.externals import joblib
-import joblib
-
-from sqlalchemy import create_engine
-from sklearn.linear_model import LogisticRegression
-"""
-
 import json
 import plotly
 import pandas as pd
@@ -30,7 +11,6 @@ from plotly.graph_objs import Bar
 #from sklearn.externals import joblib
 from sqlalchemy import create_engine
 import joblib
-
 
 app = Flask(__name__)
 
@@ -45,33 +25,12 @@ def tokenize(text):
 
     return clean_tokens
 
-
-print('going to load the database now')
 # load data
-
 engine = create_engine('sqlite:///../data/DisasterResponse.db')
-#engine = create_engine('sqlite:///data/DisasterResponse.db')  
 df = pd.read_sql_table('messages', engine)
-
-
-#df = pd.read_sql('SELECT * from messages', engine)
-
-
-print('going to load the pickle now')
 
 # load model
 model = joblib.load("../models/classifier.pkl")
-#model = joblib.load("models/classifier.pkl")
-
-print('loaded the pickle now')
-
-
-# load data
-#engine = create_engine('sqlite:///../data/DisasterResponse.db')
-#df = pd.read_sql_table('messages', engine)
-
-# load model
-#model = joblib.load("../models/classifier.pkl")
 
 
 # index webpage displays cool visuals and receives user input text for model
@@ -84,8 +43,8 @@ def index():
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
-    columns_count = df.astype(bool).sum(axis=0).iloc[4:]/len(df)
-    columns = list(df.astype(bool).sum(axis=0).iloc[4:].index)
+    label_counts = df.astype(bool).sum(axis=0).iloc[4:]
+    label_names = list(df.astype(bool).sum(axis=0).iloc[4:].index)
     
     msg_length = df['message'].str.len()
     msg_ids = [i for i in range(len(df))]
@@ -114,18 +73,18 @@ def index():
         {
             'data': [
                 Bar(
-                    x=columns,
-                    y=columns_count
+                    x=label_names,
+                    y=label_counts
                 )
             ],
 
             'layout': {
-                'title': 'Appearance of each category in the list',
+                'title': 'Count of each category of message',
                 'yaxis': {
-                    'title': "Percentage of appearance in the dataset"
+                    'title': "Count"
                 },
                 'xaxis': {
-                    'title': "Category list"
+                    'title': "Category"
                 }
             }
         },
@@ -138,7 +97,7 @@ def index():
             ],
 
             'layout': {
-                'title': 'Message Lenght',
+                'title': 'Length of each message',
                 'yaxis': {
                     'title': "Length"
                 },
@@ -148,6 +107,7 @@ def index():
             }
         }
     ]
+    
     
     # encode plotly graphs in JSON
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
