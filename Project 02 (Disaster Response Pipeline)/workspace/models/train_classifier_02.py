@@ -110,11 +110,6 @@ def build_model():
     parameters = {
     'clf__n_estimators': [50, 100, 200],
     'clf__min_samples_split': [2, 3, 4],
-    'features__transformer_weights': (
-        {'text_pipeline': 1, 'starting_verb': 0.5},
-        {'text_pipeline': 0.5, 'starting_verb': 1},
-        {'text_pipeline': 0.8, 'starting_verb': 1},
-    )
     }
 
 
