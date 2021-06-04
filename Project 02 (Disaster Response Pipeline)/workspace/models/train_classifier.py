@@ -22,7 +22,7 @@ from sklearn.pipeline import FeatureUnion
 import pickle
 from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV
-
+import gzip
 
 def load_data(database_filepath):
     """
@@ -90,7 +90,7 @@ def build_model():
     pipeline = Pipeline([
         ('features', FeatureUnion([
            ('text_pipeline', Pipeline([('vect', CountVectorizer(tokenizer=tokenize)),('tfidf', TfidfTransformer())])),
-            ('verb', StartingVerbExtractor())])),
+            ('starting_verb', StartingVerbExtractor())])),
          ('clf', RandomForestClassifier())
     ])
     
@@ -109,8 +109,8 @@ def build_model():
     'features__text_pipeline__vect__max_df': (0.5, 0.75, 1.0),
     'features__text_pipeline__vect__max_features': (None, 5000, 10000),
     'features__text_pipeline__tfidf__use_idf': (True, False),
-    'clf__n_estimators': [50, 100, 200],
-    'clf__min_samples_split': [2, 3, 4],
+    'clf__n_estimators': [50, 80, 90, 100, 200],
+    'clf__min_samples_split': [2, 3, 4, 5, 7],
     'features__transformer_weights': (
         {'text_pipeline': 1, 'starting_verb': 0.5},
         {'text_pipeline': 0.5, 'starting_verb': 1},
@@ -142,7 +142,7 @@ def evaluate_model(model, X_test, Y_test, category_names):
     pass   
 
 
-def save_model(model, model_filepath):
+def save_model(model, model_filepath, protocol=0):
     """
     Saving trained model on on disk to be load when required.
     input:
@@ -151,7 +151,12 @@ def save_model(model, model_filepath):
         
     """
     # using pickle to store trained classifier
-    pickle.dump(model,open(model_filepath,'wb'))
+    #pickle.dump(model,open(model_filepath,'wb'))
+    
+    file = gzip.GzipFile(model_filepath, 'wb')
+    file.write(pickle.dumps(model, protocol))
+    file.close()
+    
     pass
 
 

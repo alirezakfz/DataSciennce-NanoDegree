@@ -60,7 +60,7 @@ df = pd.read_sql_table('messages', engine)
 print('going to load the pickle now')
 
 # load model
-model = joblib.load("../models/classifier.pkl")
+model = joblib.load("../models/classifier_02.pkl")
 #model = joblib.load("models/classifier.pkl")
 
 print('loaded the pickle now')
@@ -176,7 +176,7 @@ def go():
 
 
 def main():
-    app.run(host='127.0.0.1', port=3001, debug=True)
+    app.run(host='0.0.0.0', port=3001, debug=True)
 
 
 if __name__ == '__main__':
