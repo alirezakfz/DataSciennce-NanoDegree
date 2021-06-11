@@ -1,2 +1,11 @@
 
+<<<<<<< HEAD
 Project 02 (Disaster Response Pipeline)/workspace/models/classifier_02.pkl
+=======
+Lesson 08 Intro to recomendation engine/data/all_recs.p
+Lesson 08 Intro to recomendation engine/data/corrs.p
+Lesson 08 Intro to recomendation engine/data/data.rar
+Lesson 08 Intro to recomendation engine/data/dists.p
+Project 02 (Disaster Response Pipeline)/workspace/classifier.pkl
+Project 02 (Disaster Response Pipeline)/workspace/models/classifier.pkl
+>>>>>>> 0fd6e5135326907d7cea89d7e1541e625c503235
