@@ -43,3 +43,4 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
     def transform(self, X):
         X_tagged = pd.Series(X).apply(self.starting_verb)
         return pd.DataFrame(X_tagged)
+
